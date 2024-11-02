@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Blue Cup - Register</title>
+</head>
+<body>
+    <h1>Register</h1>
+    <form method="POST">
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <div>
+            <label for="county">County:</label>
+            <input type="text" id="county" name="county" required>
+        </div>
+        <div>
+            <label for="home_club">Home Club:</label>
+            <input type="text" id="home_club" name="home_club" required>
+        </div>
+        <button type="submit">Register</button>
+    </form>
+    <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+</body>
+</html> 
