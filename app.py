@@ -5,10 +5,24 @@ from models import db, User, Activity
 import os
 from sqlalchemy import func
 from datetime import datetime
+# Add to your imports
+import psycopg2
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your-secret-key'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///bluecup.db'
+
+
+
+# Update database configuration
+if os.environ.get('VERCEL_ENV') == 'production':
+    DATABASE_URL = os.environ.get('DATABASE_URL')
+    if DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+    app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
+else:
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///bluecup.db'
+
+# Set instance path
 app.instance_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'instance')
 
 login_manager = LoginManager()
@@ -157,7 +171,5 @@ def logout():
     flash('You have been logged out.')
     return redirect(url_for('login'))
 
-if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()  # This will create the tables with the correct schema
-    app.run(debug=True)
+with app.app_context():
+    db.create_all()
